@@ -1,0 +1,11 @@
+streamlit
+pillow
+numpy
+pandas
+scikit-learn
+xgboost
+torch
+torchvision
+pyzbar
+opencv-python
+joblib
