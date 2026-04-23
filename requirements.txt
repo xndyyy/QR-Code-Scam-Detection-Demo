@@ -6,6 +6,6 @@ scikit-learn
 xgboost
 torch
 torchvision
-pyzbar
+opencv-python-headless
 opencv-python
 joblib

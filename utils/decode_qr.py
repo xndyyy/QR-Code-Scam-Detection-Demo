@@ -1,6 +1,7 @@
 from PIL import Image
-from pyzbar.pyzbar import decode
 import numpy as np
+import cv2
+
 
 def array_to_qr_image(arr, scale=12, border_modules=4, invert=False):
     """
@@ -34,20 +35,16 @@ def array_to_qr_image(arr, scale=12, border_modules=4, invert=False):
 
     return bg
 
-def decode_qr_from_array(arr):
-    """
-    Try decoding a QR code from a (H, W) array.
-    Tries normal and inverted versions.
-    Returns (decoded_text, pil_image_used) or (None, last_image_attempt)
-    """
-    for invert in (False, True):
-        img = array_to_qr_image(arr, scale=10, invert=invert, border_modules=4)
-        result = decode(img)
-        if result:
-            try:
-                text = result[0].data.decode("utf-8")
-            except Exception:
-                text = result[0].data
-            return text
 
+def decode_qr_from_array(image: Image.Image) -> str | None:
+    """
+    Decode a QR code from a PIL image using OpenCV.
+    Returns the decoded string, or None if decoding fails.
+    """
+    img_np = np.array(image.convert("RGB"))
+    detector = cv2.QRCodeDetector()
+    data, _, _ = detector.detectAndDecode(img_np)
+
+    if data:
+        return data
     return None
